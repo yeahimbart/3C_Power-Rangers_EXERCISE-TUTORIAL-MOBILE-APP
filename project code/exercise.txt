@@ -1,0 +1,172 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(ExerciseApp());
+}
+
+class ExerciseApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Exercise App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: ExerciseListScreen(),
+    );
+  }
+}
+
+class ExerciseListScreen extends StatelessWidget {
+  final List<Exercise> exercises = [
+    Exercise(
+      name: 'Push-ups',
+      icon: Icons.fitness_center,
+      bodyPosition: 'Prone',
+      steps: [
+        'Start in a plank position with your hands slightly wider than shoulder-width apart.',
+        'Lower your body until your chest nearly touches the floor. Keep your core engaged and back flat.',
+        'Push back up to the starting position, fully extending your arms.',
+        'Repeat for the desired number of repetitions.',
+      ],
+    ),
+    Exercise(
+      name: 'Sit-ups',
+      icon: Icons.accessibility,
+      bodyPosition: 'Supine',
+      steps: [
+        'Lie on your back with your knees bent and feet flat on the floor.',
+        'Cross your arms over your chest or place your hands behind your head.',
+        'Engage your core and lift your upper body off the floor, bringing your chest towards your knees.',
+        'Lower your body back down to the starting position with control.',
+        'Repeat for the desired number of repetitions.',
+      ],
+    ),
+    Exercise(
+      name: 'Squats',
+      icon: Icons.directions_walk,
+      bodyPosition: 'Standing',
+      steps: [
+        'Stand with your feet shoulder-width apart, toes slightly turned out.',
+        'Engage your core and keep your chest up as you lower your hips back and down, as if sitting into a chair.',
+        'Lower down until your thighs are parallel to the ground, or as far as comfortable.',
+        'Press through your heels to return to the starting position, squeezing your glutes at the top.',
+        'Repeat for the desired number of repetitions.',
+      ],
+    ),
+    Exercise(
+      name: 'Jumping Jacks',
+      icon: Icons.directions_run,
+      bodyPosition: 'Standing',
+      steps: [
+        'Start standing with your feet together and arms at your sides.',
+        'Jump your feet out wide as you raise your arms overhead.',
+        'Jump back to the starting position, bringing your feet together and arms back down to your sides.',
+        'Repeat for the desired number of repetitions.',
+      ],
+    ),
+    Exercise(
+      name: 'Plank',
+      icon: Icons.accessibility_new,
+      bodyPosition: 'Prone',
+      steps: [
+        'Start in a push-up position with your arms straight and hands directly under your shoulders.',
+        'Engage your core and glutes to keep your body in a straight line from head to heels.',
+        'Hold this position, making sure to keep your hips level and not allowing them to sag.',
+        'Keep breathing and hold for the desired duration.',
+      ],
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Exercises'),
+        backgroundColor: Colors.green, // Custom app bar background color
+      ),
+      body: Container(
+        color: Colors.grey[200], // Background color
+        child: ListView.builder(
+          itemCount: exercises.length,
+          itemBuilder: (context, index) {
+            return Card(
+              color: Colors.white, // Tile background color
+              elevation: 2.0, // Card elevation
+              margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+              child: ListTile(
+                leading: Icon(exercises[index].icon, color: Colors.orange), // Custom icon color
+                title: Text(exercises[index].name),
+                subtitle: Text('Body Position: ${exercises[index].bodyPosition}'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ExerciseDetailScreen(exercise: exercises[index]),
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class ExerciseDetailScreen extends StatelessWidget {
+  final Exercise exercise;
+
+  ExerciseDetailScreen({required this.exercise});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(exercise.name),
+        backgroundColor: Colors.green, // Custom app bar background color
+      ),
+      body: Container(
+        color: Colors.grey[200], // Background color
+        padding: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(exercise.icon, size: 100, color: Colors.orange), // Custom icon color
+            SizedBox(height: 20),
+            Text(
+              'Body Position: ${exercise.bodyPosition}',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Steps:',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: exercise.steps.map((step) {
+                return Text(
+                  step,
+                  style: TextStyle(fontSize: 16.0),
+                );
+              }).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Exercise {
+  final String name;
+  final IconData icon;
+  final String bodyPosition;
+  final List<String> steps;
+
+  Exercise({required this.name, required this.icon, required this.bodyPosition, required this.steps});
+  }
